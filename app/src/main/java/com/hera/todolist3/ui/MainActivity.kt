@@ -2,9 +2,10 @@ package com.hera.todolist3.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.hera.todolist3.R
 import com.hera.todolist3.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -14,5 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
     }
 }

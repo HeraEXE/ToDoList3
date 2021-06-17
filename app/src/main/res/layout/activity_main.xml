@@ -8,12 +8,13 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/crimson"
-        android:title="Tasks" />
+        tools:title="Title"
+        app:titleTextColor="@color/white"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"

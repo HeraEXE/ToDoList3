@@ -18,5 +18,11 @@
         android:id="@+id/createEditTaskFragment"
         android:name="com.hera.todolist3.ui.createedittask.CreateEditTaskFragment"
         android:label="fragment_create_edit_task"
-        tools:layout="@layout/fragment_create_edit_task" />
+        tools:layout="@layout/fragment_create_edit_task" >
+        <argument
+            android:name="task"
+            app:argType="com.hera.todolist3.data.Task"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
