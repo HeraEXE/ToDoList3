@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hera.todolist3.R
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.FragmentTasksBinding
+import com.hera.todolist3.utils.DatabaseOrder
 import com.hera.todolist3.utils.ObserverStatus
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +60,9 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 ObserverStatus.DELETE_DONE -> {
                     adapter.notifyDataSetChanged()
                 }
-                ObserverStatus.SLEEP -> {}
+                ObserverStatus.SLEEP -> {
+                    adapter.notifyDataSetChanged()
+                }
             }
         })
 
@@ -137,7 +140,16 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 .show()
             true
         }
-
+        R.id.action_order_by_date -> {
+            viewModel.databaseOrder.value = DatabaseOrder.BY_DATE
+            observerStatus = ObserverStatus.SLEEP
+            true
+        }
+        R.id.action_order_by_name -> {
+            viewModel.databaseOrder.value = DatabaseOrder.BY_NAME
+            observerStatus = ObserverStatus.SLEEP
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 

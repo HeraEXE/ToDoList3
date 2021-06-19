@@ -1,6 +1,7 @@
 package com.hera.todolist3.data
 
 import androidx.room.*
+import com.hera.todolist3.utils.DatabaseOrder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,6 +23,16 @@ interface TaskDao {
     suspend fun deleteDone()
 
 
+    fun getAllTasks(orderBy: DatabaseOrder) = when(orderBy) {
+        DatabaseOrder.BY_DATE -> getAllTasksOrderedByDate()
+        DatabaseOrder.BY_NAME -> getAllTasksOrderedByName()
+    }
+
+
     @Query("SELECT * FROM task_table ORDER BY date")
-    fun getAllTasks(): Flow<List<Task>>
+    fun getAllTasksOrderedByDate(): Flow<List<Task>>
+
+
+    @Query("SELECT * FROM task_table ORDER BY name")
+    fun getAllTasksOrderedByName(): Flow<List<Task>>
 }

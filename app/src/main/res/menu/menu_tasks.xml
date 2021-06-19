@@ -2,9 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_delete_done"
-        android:title="Delete done"
+    <item
+        android:id="@+id/action_order"
+        android:icon="@drawable/ic_sort"
+        android:title="order"
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+            <item
+                android:id="@+id/action_order_by_date"
+                android:title="Order by date"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_order_by_name"
+                android:title="Order by name"
+                app:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/action_delete_done"
         android:icon="@drawable/ic_delete"
-        app:showAsAction="ifRoom"/>
+        android:title="Delete done"
+        app:showAsAction="ifRoom" />
 
 </menu>
