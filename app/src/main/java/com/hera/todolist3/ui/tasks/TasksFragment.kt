@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.hera.todolist3.R
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.FragmentTasksBinding
@@ -57,6 +58,9 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 ObserverStatus.DELETE -> {
                     adapter.notifyItemRemoved(viewModel.taskPosition)
                 }
+                ObserverStatus.RESTORE -> {
+                    adapter.notifyItemInserted(viewModel.taskPosition)
+                }
                 ObserverStatus.DELETE_DONE -> {
                     adapter.notifyDataSetChanged()
                 }
@@ -101,6 +105,12 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 .setPositiveButton("Delete") { dialog, _ ->
                     observerStatus = ObserverStatus.DELETE
                     viewModel.delete(task)
+                    Snackbar.make(binding.root, "Task was deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO") {
+                            observerStatus = ObserverStatus.RESTORE
+                            viewModel.insert(task)
+                        }
+                        .show()
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
@@ -158,6 +168,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
 
     override fun updateTask(task: Task, position: Int) {
+        observerStatus = ObserverStatus.UPDATE
         viewModel.taskPosition = position
         viewModel.update(task)
     }

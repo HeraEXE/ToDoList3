@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateEditTaskViewModel @Inject constructor(
-    val dao: TaskDao
+    private val dao: TaskDao
 ) : ViewModel() {
 
     var createEditStatus = CreateEditStatus.CREATE

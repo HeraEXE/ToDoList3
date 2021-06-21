@@ -24,6 +24,12 @@ class TasksViewModel @Inject constructor(
 
     var taskPosition = 0
 
+
+    fun insert(task: Task) = viewModelScope.launch {
+        dao.insert(task)
+    }
+
+
     fun delete(task: Task) = viewModelScope.launch {
         dao.delete(task)
     }

@@ -1,10 +1,13 @@
 package com.hera.todolist3.ui.createedittask
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -13,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.hera.todolist3.R
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.FragmentCreateEditTaskBinding
+import com.hera.todolist3.ui.MainActivity
 import com.hera.todolist3.ui.tasks.observerStatus
 import com.hera.todolist3.utils.CreateEditStatus
 import com.hera.todolist3.utils.ObserverStatus
@@ -52,6 +56,7 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
 
                     val task = Task(name, description)
 
+                    hideKeyboard(activity as MainActivity)
                     AlertDialog
                         .Builder(requireContext())
                         .setCancelable(false)
@@ -87,6 +92,7 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
                     args.task?.name = name
                     args.task?.description = description
 
+                    hideKeyboard(activity as MainActivity)
                     AlertDialog
                         .Builder(requireContext())
                         .setCancelable(false)
@@ -120,5 +126,16 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
         }
 
         return isValid
+    }
+
+
+    private fun hideKeyboard(activity: Activity) {
+        val inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocusedView = activity.currentFocus
+        currentFocusedView?.let {
+            inputMethodManager.hideSoftInputFromWindow(
+                currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
     }
 }
