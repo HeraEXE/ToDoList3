@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +15,7 @@ import com.hera.todolist3.R
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.FragmentCreateEditTaskBinding
 import com.hera.todolist3.ui.MainActivity
-import com.hera.todolist3.ui.tasks.observerStatus
 import com.hera.todolist3.utils.CreateEditStatus
-import com.hera.todolist3.utils.ObserverStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,14 +52,13 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
 
                     val task = Task(name, description)
 
-                    hideKeyboard(activity as MainActivity)
+                    (activity as MainActivity).hideKeyboard(activity as MainActivity)
                     AlertDialog
                         .Builder(requireContext())
                         .setCancelable(false)
                         .setTitle("New task")
                         .setMessage("Are you sure you want to add new task?")
                         .setPositiveButton("Add") { dialog, _ ->
-                            observerStatus = ObserverStatus.INSERT
                             viewModel.insert(task)
                             dialog.dismiss()
                             findNavController().navigateUp()
@@ -92,14 +87,13 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
                     args.task?.name = name
                     args.task?.description = description
 
-                    hideKeyboard(activity as MainActivity)
+                    (activity as MainActivity).hideKeyboard(activity as MainActivity)
                     AlertDialog
                         .Builder(requireContext())
                         .setCancelable(false)
                         .setTitle("Edit task")
                         .setMessage("Are you sure you want to edit this task?")
                         .setPositiveButton("Edit") { dialog, _ ->
-                            observerStatus = ObserverStatus.UPDATE
                             viewModel.update(args.task!!)
                             dialog.dismiss()
                             findNavController().navigateUp()
@@ -126,16 +120,5 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task) {
         }
 
         return isValid
-    }
-
-
-    private fun hideKeyboard(activity: Activity) {
-        val inputMethodManager =
-            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val currentFocusedView = activity.currentFocus
-        currentFocusedView?.let {
-            inputMethodManager.hideSoftInputFromWindow(
-                currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-        }
     }
 }

@@ -22,8 +22,6 @@ class TasksViewModel @Inject constructor(
         dao.getAllTasks(orderBy)
     }.asLiveData()
 
-    var taskPosition = 0
-
 
     fun insert(task: Task) = viewModelScope.launch {
         dao.insert(task)

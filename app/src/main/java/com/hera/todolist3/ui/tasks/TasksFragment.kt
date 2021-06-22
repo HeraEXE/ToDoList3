@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +15,8 @@ import com.hera.todolist3.R
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.FragmentTasksBinding
 import com.hera.todolist3.utils.DatabaseOrder
-import com.hera.todolist3.utils.ObserverStatus
 import dagger.hilt.android.AndroidEntryPoint
 
-var observerStatus = ObserverStatus.SLEEP
 
 @AndroidEntryPoint
 class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
@@ -45,30 +42,9 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
         binding = FragmentTasksBinding.bind(view)
 
-        viewModel.tasks.observe(viewLifecycleOwner, Observer {
-            adapter.updateTasks()
-
-            when (observerStatus) {
-                ObserverStatus.INSERT -> {
-                    adapter.notifyItemInserted(it.size-1)
-                }
-                ObserverStatus.UPDATE -> {
-                    adapter.notifyItemChanged(viewModel.taskPosition)
-                }
-                ObserverStatus.DELETE -> {
-                    adapter.notifyItemRemoved(viewModel.taskPosition)
-                }
-                ObserverStatus.RESTORE -> {
-                    adapter.notifyItemInserted(viewModel.taskPosition)
-                }
-                ObserverStatus.DELETE_DONE -> {
-                    adapter.notifyDataSetChanged()
-                }
-                ObserverStatus.SLEEP -> {
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        })
+        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
+            adapter.differ.submitList(tasks)
+        }
 
         adapter = TaskAdapter(this)
 
@@ -94,8 +70,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-            viewModel.taskPosition = viewHolder.adapterPosition
-            val task = viewModel.tasks.value!![viewModel.taskPosition]
+            val task = viewModel.tasks.value!![viewHolder.adapterPosition]
 
             AlertDialog
                 .Builder(requireContext())
@@ -103,18 +78,16 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 .setTitle("Delete task")
                 .setMessage("Do you want to delete this task?")
                 .setPositiveButton("Delete") { dialog, _ ->
-                    observerStatus = ObserverStatus.DELETE
                     viewModel.delete(task)
                     Snackbar.make(binding.root, "Task was deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO") {
-                            observerStatus = ObserverStatus.RESTORE
                             viewModel.insert(task)
                         }
                         .show()
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
-                    adapter.notifyItemChanged(viewModel.taskPosition)
+                    adapter.notifyItemChanged(viewHolder.adapterPosition)
                     dialog.dismiss()
                 }
                 .create()
@@ -139,7 +112,6 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 .setTitle("Delete done tasks")
                 .setMessage("Do you want to delete all done task?")
                 .setPositiveButton("Delete") { dialog, _ ->
-                    observerStatus = ObserverStatus.DELETE_DONE
                     viewModel.deleteDone()
                     dialog.dismiss()
                 }
@@ -152,31 +124,21 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
         }
         R.id.action_order_by_date -> {
             viewModel.databaseOrder.value = DatabaseOrder.BY_DATE
-            observerStatus = ObserverStatus.SLEEP
             true
         }
         R.id.action_order_by_name -> {
             viewModel.databaseOrder.value = DatabaseOrder.BY_NAME
-            observerStatus = ObserverStatus.SLEEP
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
-
-    override fun getAllTasks() = viewModel.tasks.value ?: listOf()
-
-
-    override fun updateTask(task: Task, position: Int) {
-        observerStatus = ObserverStatus.UPDATE
-        viewModel.taskPosition = position
+    override fun updateTask(task: Task) {
         viewModel.update(task)
     }
 
 
-    override fun navigateToEdit(task: Task, position: Int) {
-        viewModel.taskPosition = position
-
+    override fun onTaskClick(task: Task) {
         val action = TasksFragmentDirections.actionTasksFragmentToCreateEditTaskFragment(task)
         findNavController().navigate(action)
     }
