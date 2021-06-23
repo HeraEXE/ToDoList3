@@ -70,7 +70,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val task = viewModel.tasks.value!![viewHolder.adapterPosition]
+            val task = adapter.differ.currentList[viewHolder.adapterPosition]
 
             AlertDialog
                 .Builder(requireContext())
