@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/crimson"
-        tools:title="Title"
-        app:titleTextColor="@color/white"/>
+        app:titleTextColor="@color/white"
+        tools:title="Title" />
 
     <fragment
         android:id="@+id/fragment"

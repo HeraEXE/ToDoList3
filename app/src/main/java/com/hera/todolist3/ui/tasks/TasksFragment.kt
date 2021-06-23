@@ -38,8 +38,6 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity).supportActionBar?.title = "Tasks"
-
         binding = FragmentTasksBinding.bind(view)
 
         viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
@@ -62,14 +60,16 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity).supportActionBar?.title = "Tasks"
+    }
+
+
     private val itemTouchHelper = object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START or ItemTouchHelper.END) {
-
-
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
 
-
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
             val task = viewModel.tasks.value!![viewHolder.adapterPosition]
 
             AlertDialog

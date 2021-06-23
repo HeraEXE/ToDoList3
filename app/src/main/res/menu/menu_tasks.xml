@@ -6,6 +6,7 @@
         android:id="@+id/action_order"
         android:icon="@drawable/ic_sort"
         android:title="order"
+        app:tint="@color/white"
         app:showAsAction="ifRoom">
 
         <menu>
@@ -28,6 +29,7 @@
         android:id="@+id/action_delete_done"
         android:icon="@drawable/ic_delete"
         android:title="Delete done"
+        app:tint="@color/white"
         app:showAsAction="ifRoom" />
 
 </menu>
