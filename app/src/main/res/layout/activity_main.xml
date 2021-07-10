@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_white"
+    android:background="@drawable/neon_gradient"
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
@@ -12,8 +12,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/crimson"
+        android:background="@color/transparent"
+        android:theme="@style/Theme.Toolbar"
+        app:subtitleTextColor="@color/white"
         app:titleTextColor="@color/white"
+        app:popupTheme="@style/Theme.Popup"
         tools:title="Title" />
 
     <fragment

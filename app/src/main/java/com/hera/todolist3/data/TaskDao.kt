@@ -1,7 +1,10 @@
 package com.hera.todolist3.data
 
 import androidx.room.*
-import com.hera.todolist3.utils.DatabaseOrder
+import com.hera.todolist3.util.Constants.BY_DATE
+import com.hera.todolist3.util.Constants.BY_DATE_DESC
+import com.hera.todolist3.util.Constants.BY_NAME
+import com.hera.todolist3.util.Constants.BY_NAME_DESC
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,9 +26,12 @@ interface TaskDao {
     suspend fun deleteDone()
 
 
-    fun getAllTasks(orderBy: DatabaseOrder) = when(orderBy) {
-        DatabaseOrder.BY_DATE -> getAllTasksOrderedByDate()
-        DatabaseOrder.BY_NAME -> getAllTasksOrderedByName()
+    fun getAllTasks(orderBy: Int) = when(orderBy) {
+        BY_DATE -> getAllTasksOrderedByDate()
+        BY_DATE_DESC -> getAllTasksOrderedByDateDesc()
+        BY_NAME -> getAllTasksOrderedByName()
+        BY_NAME_DESC -> getAllTasksOrderedByNameDEsc()
+        else -> getAllTasksOrderedByDate()
     }
 
 
@@ -33,6 +39,14 @@ interface TaskDao {
     fun getAllTasksOrderedByDate(): Flow<List<Task>>
 
 
+    @Query("SELECT * FROM task_table ORDER BY date DESC")
+    fun getAllTasksOrderedByDateDesc(): Flow<List<Task>>
+
+
     @Query("SELECT * FROM task_table ORDER BY name")
     fun getAllTasksOrderedByName(): Flow<List<Task>>
+
+
+    @Query("SELECT * FROM task_table ORDER BY name DESC")
+    fun getAllTasksOrderedByNameDEsc(): Flow<List<Task>>
 }

@@ -7,64 +7,70 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.databinding.ItemTaskBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class TaskAdapter(private val listener: Listener)
     : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemTaskBinding)
+
+
+    inner class ViewHolder(private val binding: ItemTaskBinding)
         : RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) {
+            val task = differ.currentList[position]
+            binding.apply {
+                checkBoxTask.isChecked = task.isDone
+                tvNameTask.text = task.name
+                tvDateTask.text = getFormattedDate(task.date)
+
+                checkBoxTask.setOnClickListener {
+                    task.isDone = !task.isDone
+                    listener.updateTask(task)
+                }
+                clItemTask.setOnClickListener {
+                    listener.onTaskClick(task)
+                }
+            }
+        }
+
+
+        private fun getFormattedDate(date: Long): String {
+            val formatter = SimpleDateFormat("MMMM dd, yyyy  hh:mm:ss")
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = date
+            return formatter.format(cal.time)
+        }
     }
+
+
 
     interface Listener {
 
         fun updateTask(task: Task)
 
+
         fun onTaskClick(task: Task)
     }
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<Task>() {
+
+    private val diffCallback = object : DiffUtil.ItemCallback<Task>() {
         override fun areItemsTheSame(oldItem: Task, newItem: Task) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Task, newItem: Task) = oldItem == newItem
     }
-
-    val differ = AsyncListDiffer(this, differCallback)
-
+    val differ = AsyncListDiffer(this, diffCallback)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return ViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
     override fun getItemCount() = differ.currentList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val task = differ.currentList[position]
-
-        holder.binding.apply {
-
-            checkBoxTask.isChecked = task.isDone
-            tvNameTask.text = task.name
-            tvDateTask.text = task.dateFormatted
-
-            checkBoxTask.setOnClickListener {
-                task.isDone = !task.isDone
-                listener.updateTask(task)
-            }
-
-            tvNameTask.setOnClickListener {
-                listener.onTaskClick(task)
-            }
-
-            tvDateTask.setOnClickListener {
-                listener.onTaskClick(task)
-            }
-        }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(position)
 }

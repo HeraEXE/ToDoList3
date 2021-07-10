@@ -1,11 +1,10 @@
 package com.hera.todolist3.ui.tasks
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.hera.todolist3.data.Task
 import com.hera.todolist3.data.TaskDao
-import com.hera.todolist3.utils.DatabaseOrder
+import com.hera.todolist3.util.Constants.BY_DATE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,11 +15,10 @@ class TasksViewModel @Inject constructor(
     private val dao: TaskDao
 ) : ViewModel() {
 
-    val databaseOrder = MutableStateFlow(DatabaseOrder.BY_DATE)
-
+    val databaseOrder = MutableStateFlow(BY_DATE)
     val tasks = databaseOrder.flatMapLatest { orderBy ->
         dao.getAllTasks(orderBy)
-    }.asLiveData()
+    }
 
 
     fun insert(task: Task) = viewModelScope.launch {

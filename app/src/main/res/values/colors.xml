@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_transparent">#AFFFFFFF</color>
     <color name="grey_white">#FFDEE2E6</color>
     <color name="dark_grey">#FF212529</color>
     <color name="dark_grey_trans">#AF212529</color>
-
-    <color name="crimson">#FFC71F37</color>
-    <color name="crimson_ua">#FFA71E34</color>
-    <color name="antique_ruby">#FF85182A</color>
-
+    <color name="neon_pink">#FFFF00D4</color>
+    <color name="neon_pink_light">#FFFF44FF</color>
+    <color name="neon_blue">#FF00DDFF</color>
+    <color name="neon_blue_transparent">#AF00AAFF</color>
 </resources>

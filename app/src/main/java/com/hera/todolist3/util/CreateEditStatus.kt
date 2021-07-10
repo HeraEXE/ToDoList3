@@ -1,3 +1,3 @@
-package com.hera.todolist3.utils
+package com.hera.todolist3.util
 
 enum class CreateEditStatus { CREATE, EDIT }

@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_white"
     tools:context=".ui.createedittask.CreateEditTaskFragment">
 
     <ScrollView
@@ -17,35 +16,53 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_task_name"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/il_task_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/background_edit_text"
-                android:hint="Task name"
-                android:inputType="text"
-                android:maxLength="30"
                 android:padding="4dp"
-                android:textColor="@color/dark_grey"
-                android:textColorHint="@color/dark_grey_trans"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white_transparent"
+                app:helperText="Required*"
+                android:hint="Title"
+                app:counterEnabled="true"
+                app:errorEnabled="true"
+                app:counterMaxLength="40"
+                app:counterTextColor="@color/white_transparent"
+                app:helperTextTextColor="@color/neon_pink_light"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_task_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="40"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="20sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-
-            <EditText
-                android:id="@+id/et_task_description"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/il_task_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/background_edit_text"
-                android:hint="Task description"
-                android:inputType="textMultiLine"
-                android:maxLength="300"
                 android:padding="4dp"
-                android:textColor="@color/dark_grey"
-                android:textColorHint="@color/dark_grey_trans"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white_transparent"
+                android:hint="Description"
+                app:counterEnabled="true"
+                app:counterMaxLength="100"
+                app:counterTextColor="@color/white_transparent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_task_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="100"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="16sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
@@ -57,9 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/crimson_ua"
+        app:backgroundTint="@color/neon_blue"
         android:src="@drawable/ic_edit"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
         app:maxImageSize="30dp"
-        app:tint="@color/white" />
+        app:tint="@color/neon_pink" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
