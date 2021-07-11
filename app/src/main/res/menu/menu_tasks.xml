@@ -2,19 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+    <item
         android:id="@+id/action_order"
         android:icon="@drawable/ic_sort"
         android:title="Order by"
-        app:tint="@color/white"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/action_order_by_date"
-                android:title="Newest"
+                android:title="Urgent"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/action_order_by_date_desc"
-                android:title="Oldest"
+                android:title="Trivial"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/action_order_by_name"
@@ -30,6 +35,5 @@
         android:id="@+id/action_delete_done"
         android:icon="@drawable/ic_delete"
         android:title="Delete done"
-        app:tint="@color/white"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

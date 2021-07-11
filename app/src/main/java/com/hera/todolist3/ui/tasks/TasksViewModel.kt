@@ -15,9 +15,12 @@ class TasksViewModel @Inject constructor(
     private val dao: TaskDao
 ) : ViewModel() {
 
-    val databaseOrder = MutableStateFlow(BY_DATE)
-    val tasks = databaseOrder.flatMapLatest { orderBy ->
-        dao.getAllTasks(orderBy)
+    val query = MutableStateFlow("")
+    val orderBy = MutableStateFlow(BY_DATE)
+    val tasks = combine(query, orderBy) { query, orderBy ->
+        Pair(query, orderBy)
+    }.flatMapLatest { (query, orderBy) ->
+        dao.getAllTasks(query, orderBy)
     }
 
 

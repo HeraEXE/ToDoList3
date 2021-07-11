@@ -26,27 +26,27 @@ interface TaskDao {
     suspend fun deleteDone()
 
 
-    fun getAllTasks(orderBy: Int) = when(orderBy) {
-        BY_DATE -> getAllTasksOrderedByDate()
-        BY_DATE_DESC -> getAllTasksOrderedByDateDesc()
-        BY_NAME -> getAllTasksOrderedByName()
-        BY_NAME_DESC -> getAllTasksOrderedByNameDEsc()
-        else -> getAllTasksOrderedByDate()
+    fun getAllTasks(query: String, orderBy: Int) = when(orderBy) {
+        BY_DATE -> getAllTasksOrderedByDate(query)
+        BY_DATE_DESC -> getAllTasksOrderedByDateDesc(query)
+        BY_NAME -> getAllTasksOrderedByName(query)
+        BY_NAME_DESC -> getAllTasksOrderedByNameDEsc(query)
+        else -> getAllTasksOrderedByDate(query)
     }
 
 
-    @Query("SELECT * FROM task_table ORDER BY date")
-    fun getAllTasksOrderedByDate(): Flow<List<Task>>
+    @Query("SELECT * FROM task_table WHERE name LIKE '%' || :query || '%' ORDER BY date")
+    fun getAllTasksOrderedByDate(query: String): Flow<List<Task>>
 
 
-    @Query("SELECT * FROM task_table ORDER BY date DESC")
-    fun getAllTasksOrderedByDateDesc(): Flow<List<Task>>
+    @Query("SELECT * FROM task_table WHERE name LIKE '%' || :query || '%' ORDER BY date DESC")
+    fun getAllTasksOrderedByDateDesc(query: String): Flow<List<Task>>
 
 
-    @Query("SELECT * FROM task_table ORDER BY name")
-    fun getAllTasksOrderedByName(): Flow<List<Task>>
+    @Query("SELECT * FROM task_table WHERE name LIKE '%' || :query || '%' ORDER BY name")
+    fun getAllTasksOrderedByName(query: String): Flow<List<Task>>
 
 
-    @Query("SELECT * FROM task_table ORDER BY name DESC")
-    fun getAllTasksOrderedByNameDEsc(): Flow<List<Task>>
+    @Query("SELECT * FROM task_table WHERE name LIKE '%' || :query || '%' ORDER BY name DESC")
+    fun getAllTasksOrderedByNameDEsc(query: String): Flow<List<Task>>
 }

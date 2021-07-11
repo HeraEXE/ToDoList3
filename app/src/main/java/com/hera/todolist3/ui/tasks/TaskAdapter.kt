@@ -37,7 +37,7 @@ class TaskAdapter(private val listener: Listener)
 
 
         private fun getFormattedDate(date: Long): String {
-            val formatter = SimpleDateFormat("MMMM dd, yyyy  hh:mm:ss")
+            val formatter = SimpleDateFormat("MMMM dd, yyyy")
             val cal = Calendar.getInstance()
             cal.timeInMillis = date
             return formatter.format(cal.time)

@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -47,7 +49,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.databaseOrder.value = sharedPrefs.getInt("order", BY_DATE)
+        viewModel.orderBy.value = sharedPrefs.getInt("order", BY_DATE)
         _binding = FragmentTasksBinding.bind(view)
         adapter = TaskAdapter(this)
         binding.apply {
@@ -111,6 +113,21 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_tasks, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        val editText: EditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+        editText.setTextColor(resources.getColor(R.color.white))
+        searchView.queryHint = "Search..."
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?) = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null)
+                    viewModel.query.value = newText
+                return true
+            }
+        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -141,22 +158,22 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
             true
         }
         R.id.action_order_by_date -> {
-            viewModel.databaseOrder.value = BY_DATE
+            viewModel.orderBy.value = BY_DATE
             saveInSharedPrefs(BY_DATE)
             true
         }
         R.id.action_order_by_date_desc -> {
-            viewModel.databaseOrder.value = BY_DATE_DESC
+            viewModel.orderBy.value = BY_DATE_DESC
             saveInSharedPrefs(BY_DATE_DESC)
             true
         }
         R.id.action_order_by_name -> {
-            viewModel.databaseOrder.value = BY_NAME
+            viewModel.orderBy.value = BY_NAME
             saveInSharedPrefs(BY_NAME)
             true
         }
         R.id.action_order_by_name_desc -> {
-            viewModel.databaseOrder.value = BY_NAME_DESC
+            viewModel.orderBy.value = BY_NAME_DESC
             saveInSharedPrefs(BY_NAME_DESC)
             true
         }
