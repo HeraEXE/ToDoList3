@@ -57,7 +57,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
             recycler.adapter = adapter
             ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recycler)
             fabNewTask.setOnClickListener {
-                val action = TasksFragmentDirections.actionTasksFragmentToCreateEditTaskFragment()
+                val action = TasksFragmentDirections.actionTasksFragmentToCreateEditTaskFragment(title = "Create task")
                 findNavController().navigate(action)
             }
         }
@@ -66,12 +66,6 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
                 adapter.differ.submitList(tasks)
             }
         }
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        (activity as AppCompatActivity).supportActionBar?.title = "Tasks"
     }
 
 
@@ -187,7 +181,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TaskAdapter.Listener {
 
 
     override fun onTaskClick(task: Task) {
-        val action = TasksFragmentDirections.actionTasksFragmentToCreateEditTaskFragment(task)
+        val action = TasksFragmentDirections.actionTasksFragmentToCreateEditTaskFragment(task = task, title= "Edit task")
         findNavController().navigate(action)
     }
 

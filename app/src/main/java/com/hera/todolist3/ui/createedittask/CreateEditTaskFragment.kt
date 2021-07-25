@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task), DatePickerDialog.OnDateSetListener {
+class  CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task), DatePickerDialog.OnDateSetListener {
 
     private val args: CreateEditTaskFragmentArgs by navArgs()
     private val viewModel: CreateEditTaskViewModel by viewModels()
@@ -50,10 +50,7 @@ class CreateEditTaskFragment : Fragment(R.layout.fragment_create_edit_task), Dat
         _binding = FragmentCreateEditTaskBinding.bind(view)
         showDateAndTime()
         binding.apply {
-            if (viewModel.createEditStatus == CreateEditStatus.CREATE) {
-                (activity as AppCompatActivity).supportActionBar?.title = "Create task"
-            } else {
-                (activity as AppCompatActivity).supportActionBar?.title = "Edit task"
+            if (viewModel.createEditStatus == CreateEditStatus.EDIT) {
                 etTaskName.setText(task.name)
                 etTaskDescription.setText(task.description)
             }

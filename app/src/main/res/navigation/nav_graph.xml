@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/tasksFragment"
         android:name="com.hera.todolist3.ui.tasks.TasksFragment"
-        android:label="fragment_tasks"
+        android:label="Tasks"
         tools:layout="@layout/fragment_tasks" >
         <action
             android:id="@+id/action_tasksFragment_to_createEditTaskFragment"
@@ -17,12 +17,15 @@
     <fragment
         android:id="@+id/createEditTaskFragment"
         android:name="com.hera.todolist3.ui.createedittask.CreateEditTaskFragment"
-        android:label="fragment_create_edit_task"
+        android:label="{title}"
         tools:layout="@layout/fragment_create_edit_task" >
         <argument
             android:name="task"
             app:argType="com.hera.todolist3.data.Task"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>
